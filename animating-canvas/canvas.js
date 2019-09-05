@@ -9,10 +9,10 @@ let c = canvas.getContext('2d');
 //case, we're just recursively calling the animate function, causing a loop to happen.
 
 //These variables are used to change the value of the animation.
-let x = 100;
-let dx = 5;
-let y = 100;
-let dy = 5;
+let x = Math.random() * window.innerWidth;
+let dx = (Math.random() - 0.5) * 8;
+let y = Math.random() * window.innerHeight;
+let dy = (Math.random() - 0.5) * 8;
 let radius = 30;
 
 const animate = () => {
@@ -30,10 +30,12 @@ const animate = () => {
   //why we use the radius to make it bounce once the edge touches the window's edge.
   if (x + radius > window.innerWidth || x - radius < 0) {
     dx = -dx;
+    c.strokeStyle = '#' + (((1 << 24) * Math.random()) | 0).toString(16);
   }
 
   if (y + radius > window.innerHeight || y - radius < 0) {
     dy = -dy;
+    c.strokeStyle = '#' + (((1 << 24) * Math.random()) | 0).toString(16);
   }
 
   //Changing the position variables causes a change in the next animation frame, making the illusion of motion.
