@@ -10,7 +10,8 @@ let c = canvas.getContext('2d');
 
 //These variables are used to change the value of the animation.
 let x = 100;
-let y = 100;
+let dx = 5;
+let radius = 30;
 const animate = () => {
   requestAnimationFrame(animate);
 
@@ -19,11 +20,16 @@ const animate = () => {
   c.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
   c.beginPath();
-  c.arc(x, y, 30, 0, Math.PI * 2, false);
+  c.arc(x, 100, radius, 0, Math.PI * 2, false);
   c.stroke();
 
-  x += 1;
-  y += 1;
+  //Changes direction of velocity (dx) once x reaches the edges of the screen. The position of the circle is measured from its center so that's
+  //why we use the radius to make it bounce once the edge touches the window's edge.
+  if (x + radius > window.innerWidth || x - radius < 0) {
+    dx = -dx;
+  }
+
+  x += dx;
 };
 
 animate();
