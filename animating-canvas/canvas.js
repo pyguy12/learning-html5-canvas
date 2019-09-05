@@ -14,6 +14,7 @@ let dx = 5;
 let y = 100;
 let dy = 5;
 let radius = 30;
+
 const animate = () => {
   requestAnimationFrame(animate);
 
