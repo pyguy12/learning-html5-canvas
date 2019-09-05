@@ -1,3 +1,39 @@
+//Circle class
+class Circle {
+  constructor(x, y, radius, dx, dy) {
+    this.x = x;
+    this.y = y;
+    this.radius = radius;
+    this.dx = dx;
+    this.dy = dy;
+  }
+
+  draw() {
+    c.beginPath();
+    c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+    c.stroke();
+  }
+
+  update() {
+    //Changes direction of velocity (dx) once x reaches the edges of the screen. The position of the circle is measured from its center so that's
+    //why we use the radius to make it bounce once the edge touches the window's edge.
+    if (this.x + this.radius > window.innerWidth || this.x - this.radius < 0) {
+      this.dx = -this.dx;
+      c.strokeStyle = '#' + (((1 << 24) * Math.random()) | 0).toString(16);
+    }
+
+    if (this.y + this.radius > window.innerHeight || this.y - this.radius < 0) {
+      this.dy = -this.dy;
+      c.strokeStyle = '#' + (((1 << 24) * Math.random()) | 0).toString(16);
+    }
+
+    //Changing the position variables causes a change in the next animation frame, making the illusion of motion.
+    this.y += this.dy;
+    this.x += this.dx;
+  }
+}
+
+//Canvas code starts here
 let canvas = document.querySelector('canvas');
 
 canvas.width = window.innerWidth;
@@ -15,6 +51,8 @@ let y = Math.random() * window.innerHeight;
 let dy = (Math.random() - 0.5) * 8;
 let radius = 30;
 
+let circle = new Circle(x, y, radius, dx, dy);
+
 const animate = () => {
   requestAnimationFrame(animate);
 
@@ -22,25 +60,8 @@ const animate = () => {
   //there in the next animation frame.
   c.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
-  c.beginPath();
-  c.arc(x, y, radius, 0, Math.PI * 2, false);
-  c.stroke();
-
-  //Changes direction of velocity (dx) once x reaches the edges of the screen. The position of the circle is measured from its center so that's
-  //why we use the radius to make it bounce once the edge touches the window's edge.
-  if (x + radius > window.innerWidth || x - radius < 0) {
-    dx = -dx;
-    c.strokeStyle = '#' + (((1 << 24) * Math.random()) | 0).toString(16);
-  }
-
-  if (y + radius > window.innerHeight || y - radius < 0) {
-    dy = -dy;
-    c.strokeStyle = '#' + (((1 << 24) * Math.random()) | 0).toString(16);
-  }
-
-  //Changing the position variables causes a change in the next animation frame, making the illusion of motion.
-  y += dy;
-  x += dx;
+  circle.draw();
+  circle.update();
 };
 
 animate();
